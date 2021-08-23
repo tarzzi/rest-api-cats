@@ -1,8 +1,11 @@
 /*
 Example api demo with cats
 */
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+  }
 
-const express = require('express'); //Import Express
+const express = require('express'); 
 const app = express();
 app.use(express.json())
 const mysql = require('mysql');
@@ -11,7 +14,7 @@ var pool = mysql.createPool({
     connectionLimit : 10,
     host: "localhost",
     user: "root",
-    password: "kissa",
+    password: process.env.PASSWD,
     database : "tarmocats"
   });
 
@@ -28,8 +31,6 @@ var pool = mysql.createPool({
             } else {
                 console.log(err)
             }
-            
-            console.log('The cat data is: \n', rows)
         })
     })
 });
@@ -41,16 +42,13 @@ app.get('/cats', (req, res) => {
         if(err) throw err
         console.log('connected as id ' + connection.threadId)
         connection.query('SELECT * from cat', (err, rows) => {
-            connection.release() // return the connection to pool
+            connection.release() 
 
             if (!err) {
                 res.send(rows)
             } else {
                 console.log(err)
             }
-
-            // if(err) throw err
-            console.log('The data from cats table are: \n', rows)
         })
     })
 })
@@ -59,14 +57,12 @@ app.get('/cats/:id', (req, res) => {
     pool.getConnection((err, connection) => {
         if(err) throw err
         connection.query('SELECT * FROM cat WHERE id = ?', [req.params.id], (err, rows) => {
-            connection.release() // return the connection to pool
+            connection.release() 
             if (!err) {
                 res.send(rows)
             } else {
                 console.log(err)
             }
-            
-            console.log('The cat data is: \n', rows)
         })
     })
 });
@@ -81,7 +77,7 @@ app.put('/cats/:id', (req, res) => {
         const { id, name, age, imgsrc } = req.body
 
         connection.query('UPDATE cat SET name = ?, age = ?, imgsrc = ? WHERE id = ?', [name, age, imgsrc, id] , (err, rows) => {
-            connection.release() // return the connection to pool
+            connection.release() 
 
             if(!err) {
                 res.send(`Cat with the id: ${id} has been updated.`)
@@ -90,8 +86,6 @@ app.put('/cats/:id', (req, res) => {
             }
 
         })
-
-        console.log(req.body)
     })
 })
 
@@ -101,20 +95,16 @@ app.delete('/cats/:id', (req, res) => {
     pool.getConnection((err, connection) => {
         if(err) throw err
         connection.query('DELETE FROM cat WHERE id = ?', [req.params.id], (err, rows) => {
-            connection.release() // return the connection to pool
+            connection.release()
             if (!err) {
                 res.send(`Cat with the record ID ${[req.params.id]} has been removed.`)
             } else {
                 console.log(err)
             }
-            
-            console.log('The data from cats table are: \n', rows)
         })
     })
 });
-   
-
-   
+      
 
 //PORT ENVIRONMENT VARIABLE
 const port = process.env.PORT || 8080;
