@@ -1,0 +1,23 @@
+{
+  "name": "restapidemo",
+  "version": "1.0.0",
+  "description": "Create rest test api",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tarzzi/rest-api-cats.git"
+  },
+  "author": "tarmo_urrio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tarzzi/rest-api-cats/issues"
+  },
+  "homepage": "https://github.com/tarzzi/rest-api-cats#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "joi": "^17.4.2"
+  }
+}
