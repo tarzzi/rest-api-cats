@@ -1,2 +1,2 @@
 # rest-api-cats
-does rest api mean it's always resting??
+Rest api with cats. For testing and learning.
