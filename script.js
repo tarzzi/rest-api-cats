@@ -1,5 +1,10 @@
+/*
+Example api demo with cats
+*/
+
 const express = require('express'); //Import Express
 const app = express();
+app.use(express.json())
 const mysql = require('mysql');
  
 var pool = mysql.createPool({
@@ -9,10 +14,29 @@ var pool = mysql.createPool({
     password: "kissa",
     database : "tarmocats"
   });
-  
 
+
+// CREATE
+ app.post('/cats/add', (req, res) => {
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        const { id, name, age, imgsrc } = req.body
+        connection.query('INSERT INTO cat SET name=?, age=?, imgsrc=?', [name, age, imgsrc, id], (err, rows) => {
+            connection.release() // return the connection to pool
+            if (!err) {
+                res.send(rows)
+            } else {
+                console.log(err)
+            }
+            
+            console.log('The cat data is: \n', rows)
+        })
+    })
+});
+
+// READ
 // Get all cats
-app.get('', (req, res) => {
+app.get('/cats', (req, res) => {
     pool.getConnection((err, connection) => {
         if(err) throw err
         console.log('connected as id ' + connection.threadId)
@@ -30,30 +54,67 @@ app.get('', (req, res) => {
         })
     })
 })
-
-// CREATE
-app.post('/', (req, res) => {
-    return res.send('Received a POST HTTP method');
-  });
-
-// READ
-app.get('/', (req, res) => {
-    return res.send('Received a GET HTTP method');
-  });
+// Get cat by id
+app.get('/cats/:id', (req, res) => {
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        connection.query('SELECT * FROM cat WHERE id = ?', [req.params.id], (err, rows) => {
+            connection.release() // return the connection to pool
+            if (!err) {
+                res.send(rows)
+            } else {
+                console.log(err)
+            }
+            
+            console.log('The cat data is: \n', rows)
+        })
+    })
+});
 
 // UPDATE   
-app.put('/', (req, res) => {
-    return res.send('Received a PUT HTTP method');
-  });
+app.put('/cats/:id', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        const { id, name, age, imgsrc } = req.body
+
+        connection.query('UPDATE cat SET name = ?, age = ?, imgsrc = ? WHERE id = ?', [name, age, imgsrc, id] , (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(`Cat with the id: ${id} has been updated.`)
+            } else {
+                console.log(err)
+            }
+
+        })
+
+        console.log(req.body)
+    })
+})
 
 // DELETE
-app.delete('/', (req, res) => {
-    return res.send('Received a DELETE HTTP method');
-  });
+app.delete('/cats/:id', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        connection.query('DELETE FROM cat WHERE id = ?', [req.params.id], (err, rows) => {
+            connection.release() // return the connection to pool
+            if (!err) {
+                res.send(`Cat with the record ID ${[req.params.id]} has been removed.`)
+            } else {
+                console.log(err)
+            }
+            
+            console.log('The data from cats table are: \n', rows)
+        })
+    })
+});
    
 
    
-
 
 //PORT ENVIRONMENT VARIABLE
 const port = process.env.PORT || 8080;
