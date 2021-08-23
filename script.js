@@ -1,89 +1,60 @@
 const express = require('express'); //Import Express
-const Joi = require('joi'); //Import Joi
-const app = express(); //Create Express Application on the app variable
-app.use(express.json()); //used the json file
+const app = express();
+const mysql = require('mysql');
  
-//Give data to the server
-const customers = [
-{title: 'George', id: 1},
-{title: 'Josh', id: 2},
-{title: 'Tyler', id: 3},
-{title: 'Alice', id: 4},
-{title: 'Candice', id: 5}
-]
- 
-//Read Request Handlers
-// Display the Message when the URL consist of '/'
+var pool = mysql.createPool({
+    connectionLimit : 10,
+    host: "localhost",
+    user: "root",
+    password: "kissa",
+    database : "tarmocats"
+  });
+  
+
+// Get all cats
+app.get('', (req, res) => {
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log('connected as id ' + connection.threadId)
+        connection.query('SELECT * from cat', (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if (!err) {
+                res.send(rows)
+            } else {
+                console.log(err)
+            }
+
+            // if(err) throw err
+            console.log('The data from cats table are: \n', rows)
+        })
+    })
+})
+
+// CREATE
+app.post('/', (req, res) => {
+    return res.send('Received a POST HTTP method');
+  });
+
+// READ
 app.get('/', (req, res) => {
-res.send('Welcome to Edurekas REST API!');
-});
-// Display the List Of Customers when URL consists of api customers
-app.get('/api/customers', (req,res)=> {
-res.send(customers);
-});
-// Display the Information Of Specific Customer when you mention the id.
-app.get('/api/customers/:id', (req, res) => {
-const customer = customers.find(c => c.id === parseInt(req.params.id));
-//If there is no valid customer ID, then display an error with the following message
-if (!customer) res.status(404).send('<h2 style="font-family: Malgun Gothic; color: darkred;">Ooops... Cant find what you are looking for!</h2>');
-res.send(customer);
-});
- 
-//CREATE Request Handler
-//CREATE New Customer Information
-app.post('/api/customers', (req, res)=> {
- 
-const { error } = validateCustomer(req.body);
-if (error){
-res.status(400).send(error.details[0].message)
-return;
-}
-//Increment the customer id
-const customer = {
-id: customers.length + 1,
-title: req.body.title
-};
-customers.push(customer);
-res.send(customer);
-});
- 
-//Update Request Handler
-// Update Existing Customer Information
-app.put('/api/customers/:id', (req, res) => {
-const customer = customers.find(c=> c.id === parseInt(req.params.id));
-if (!customer) res.status(404).send('<h2 style="font-family: Malgun Gothic; color: darkred;">Not Found!! </h2>');
- 
-const { error } = validateCustomer(req.body);
-if (error){
-res.status(400).send(error.details[0].message);
-return;
-}
- 
-customer.title = req.body.title;
-res.send(customer);
-});
- 
-//Delete Request Handler
-// Delete Customer Details
-app.delete('/api/customers/:id', (req, res) => {
- 
-const customer = customers.find( c=> c.id === parseInt(req.params.id));
-if(!customer) res.status(404).send('<h2 style="font-family: Malgun Gothic; color: darkred;">Not Found!!</h2></span>');
- 
-const index = customers.indexOf(customer);
-customers.splice(index,1);
- 
-res.send(customer);
-});
-//Validate Information
-function validateCustomer(customer) {
-const schema = {
-title: Joi.string().min(3).required()
-};
-return Joi.validate(customer, schema);
- 
-}
- 
+    return res.send('Received a GET HTTP method');
+  });
+
+// UPDATE   
+app.put('/', (req, res) => {
+    return res.send('Received a PUT HTTP method');
+  });
+
+// DELETE
+app.delete('/', (req, res) => {
+    return res.send('Received a DELETE HTTP method');
+  });
+   
+
+   
+
+
 //PORT ENVIRONMENT VARIABLE
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Listening on port ${port}..`));

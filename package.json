@@ -18,6 +18,7 @@
   "homepage": "https://github.com/tarzzi/rest-api-cats#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "joi": "^17.4.2"
+    "joi": "^17.4.2",
+    "mysql": "^2.18.1"
   }
 }
