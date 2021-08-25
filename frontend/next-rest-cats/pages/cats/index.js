@@ -19,15 +19,10 @@ export async function getStaticProps(context) {
 }
 
 export default function Cats({ cats }) {
-  const allCats = cats.map((cat) => (
-    <div>
-      X
-      <Card cat={cat} key={cat.id} />
-    </div>
-  ));
+  const allCats = cats.map((cat) => <Card key={cat.id} {...cat} />);
 
   return (
-    <div>
+    <main>
       <Link href="/">Go back </Link>
 
       <h1>All cats</h1>
@@ -52,15 +47,14 @@ export default function Cats({ cats }) {
         }
 
         .grid {
-          margin: 2rem 0;
           display: grid;
-          grid-template-columns: auto auto auto auto auto;
+          grid-template-columns: auto auto auto auto;
           justify-content: center;
           align-items: center;
-          gap: 5rem;
+          gap: 1rem;
           font-size: 1.5rem;
         }
       `}</style>
-    </div>
+    </main>
   );
 }
