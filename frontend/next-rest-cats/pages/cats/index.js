@@ -1,8 +1,8 @@
 import Link from "next/link";
-import Card from "../../components/Card";
+import Image from 'next/image';
 
 export async function getStaticProps(params) {
-  const res = await fetch('https://jsonplaceholder.typicode.com/users');
+  const res = await fetch('http://localhost:8080/cats');
   const cats = await res.json();
 
   return {
@@ -13,21 +13,18 @@ export async function getStaticProps(params) {
 }
 
 export default function Cats({ cats }) {
-  const allCats = cats.map((cat) => (
-        <Link href={`/${encodeURIComponent(cat.id)}`}>
-            <Card {...cat} />
-        </Link>
-  ))
 
   return (
-    <main>
-      <Link href="/">Go back </Link>
-
-      <h1>All cats</h1>
+    <>
+      <div className='banner'>
+        <Link href="/">Go back </Link>
+        <h1>All cats</h1>
+      </div>
       <div className="grid">{cats.map((cat) => (
           <Link href={`/cats/${cat.id}`} key={cat.id}>
             <div className='card'>
               <h3>{cat.name}</h3>
+              <Image src='https://via.placeholder.com/300/' width={150} height={150} />
             </div>
           </Link>
       ))}</div>
@@ -35,11 +32,18 @@ export default function Cats({ cats }) {
 
       <style jsx>{`
         * {
+        margin: 0;
         list-style-type: none;
           font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
             Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
             sans-serif;
           box-sizing: border-box;
+        }
+        body{
+        margin: 0;
+        }
+        h1{
+        margin-top: 2rem;
         }
         a {
           list-style-type: none;
@@ -47,15 +51,20 @@ export default function Cats({ cats }) {
           color: black;
         }
         a:visited {
-          color: black;
+          color: black !important;
         }
         a:hover {
           text-decoration: underline;
         }
-
+        .banner{
+        color: black;
+        background-color: white;
+        text-align: center;
+        }
         .grid {
           display: grid;
-          grid-template-columns: auto auto auto auto;
+          grid-template-columns: repeat(3, auto);
+          grid-auto-flow: row;
           justify-content: center;
           align-items: center;
           gap: 1rem;
@@ -66,7 +75,7 @@ export default function Cats({ cats }) {
           margin: 1rem;
           flex-basis: 45%;
           padding: 1.5rem;
-          text-align: left;
+          text-align: center;
           color: inherit;
           text-decoration: none;
           border: 1px solid #eaeaea;
@@ -89,6 +98,6 @@ export default function Cats({ cats }) {
           line-height: 1.5;
         }
       `}</style>
-    </main>
+    </>
   );
 }

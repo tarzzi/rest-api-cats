@@ -20,7 +20,6 @@ export default function IndexPage() {
       </div>
       <div className="grid">
         <Link href="/cats">All cats</Link>
-        <Link href="/cats/edit">Edit a cat</Link>
       </div>
       <div className="footer">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -41,7 +40,7 @@ export default function IndexPage() {
         .grid {
           margin: 2rem 0;
           display: grid;
-          grid-template-columns: auto auto;
+          grid-template-columns: auto ;
           justify-content: center;
           align-items: center;
           gap: 5rem;

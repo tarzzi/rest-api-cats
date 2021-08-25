@@ -1,7 +1,7 @@
 import Link from 'next/link'
-
+import Image from 'next/image';
 export const getStaticPaths = async () => {
-	const res = await fetch('https://jsonplaceholder.typicode.com/users');
+	const res = await fetch('http://localhost:8080/cats');
 	const cats = await res.json();
 
 	const paths = cats.map(cat => {
@@ -18,24 +18,31 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context) => {
 	const id = context.params.id;
-	const res = await fetch('https://jsonplaceholder.typicode.com/users/' + id);
-	const data = await res.json();
+	const res = await fetch('http://localhost:8080/cats/' + id);
+	const catData = await res.json();
 
 	return {
-		props: { cat: data }
+		props: { catData }
 	}
 }
 
 
-const Cat = ({cat}) => {
-
+const CatInfo = ({ catData }) => {
+	const cat = catData[0];
 	return(
 			<div>
-				<Link href='/cats'>Go back</Link>
+				<div className='banner'>
+					<Link href="/cats">All cats</Link>
+					<h1>Cat {cat.id} / of all cats</h1>
+				</div>
 				<div className='card'>
-					<h2>{cat.username}</h2>
-					<p>{cat.name}</p>
-					<p>{cat.address.city}</p>
+					<div className='left'>
+						<h2>Name: {cat.name}</h2>
+						<p>Age: {cat.age}</p>
+					</div>
+					<div className='image'>
+						<Image src={cat.imgsrc} width={300} height={300} />
+					</div>
 				</div>
 				<style jsx>{`
         * {
@@ -44,11 +51,20 @@ const Cat = ({cat}) => {
             sans-serif;
           box-sizing: border-box;
         }
+        h1{        
+        	text-align: center;
+        }
+        .left{
+        text-align: left;
+        }
         p {
           margin: 0;
         }
         h2 {
           margin: 0;
+        }
+        h1{
+        margin-top: 2rem;
         }
         a {
           list-style-type: none;
@@ -61,9 +77,21 @@ const Cat = ({cat}) => {
         a:hover {
           text-decoration: underline;
         }
+        .grid{
+        	display: grid;
+        	grid-template-columns: auto auto;
+        }
+        .image{
+        position: absolute;
+        right: 0;
+        top: 0;
+        }
         .card {
+        	position: relative;
         	width: 50%;
-          margin: auto;
+        	height: 300px;
+        	padding: 10rem 0 ;
+          margin: 0 auto;
           flex-basis: 45%;
           padding: 1.5rem;
           text-align: left;
@@ -72,12 +100,6 @@ const Cat = ({cat}) => {
           border: 1px solid #eaeaea;
           border-radius: 10px;
           transition: color 0.15s ease, border-color 0.15s ease;
-        }
-        .card:hover,
-        .card:focus,
-        .card:active {
-          color: #0070f3;
-          border-color: #0070f3;
         }
         .card h3 {
           margin: 0 0 1rem 0;
@@ -94,4 +116,4 @@ const Cat = ({cat}) => {
 
 }
 
-export default Cat
+export default CatInfo
