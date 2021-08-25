@@ -24,7 +24,7 @@ export default function Cats({ cats }) {
           <Link href={`/cats/${cat.id}`} key={cat.id}>
             <div className='card'>
               <h3>{cat.name}</h3>
-              <Image src='https://via.placeholder.com/300/' width={150} height={150} />
+              <Image src={cat.imgsrc} width={150} height={150} />
             </div>
           </Link>
       ))}</div>
