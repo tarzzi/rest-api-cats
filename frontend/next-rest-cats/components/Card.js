@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function Card(cat) {
   return (
     <div className="card">
@@ -55,6 +57,6 @@ export default function Card(cat) {
           line-height: 1.5;
         }
       `}</style>
-    </div>
+  </div>
   );
 }
