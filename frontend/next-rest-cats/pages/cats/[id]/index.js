@@ -32,17 +32,23 @@ const CatInfo = ({ catData }) => {
 	return(
 			<div>
 				<div className='banner'>
-					<Link href="/cats">All cats</Link>
 					<h1>Cat {cat.id} / of all cats</h1>
 				</div>
 				<div className='card'>
 					<div className='left'>
 						<h2>Name: {cat.name}</h2>
 						<p>Age: {cat.age}</p>
+						<p>Favorite food: {cat.favfood}</p>
+						<p>Bio: {cat.bio}</p>
 					</div>
 					<div className='image'>
 						<Image src={cat.imgsrc} width={300} height={300} />
 					</div>
+				</div>
+				<div className='footer'>
+					<Link href="/cats">
+						<h3 className='backbtn'>↩ All cats </h3>
+					</Link>
 				</div>
 				<style jsx>{`
         * {
@@ -51,11 +57,25 @@ const CatInfo = ({ catData }) => {
             sans-serif;
           box-sizing: border-box;
         }
+        body{
+        	background-color:#f5fcff;
+        }
+        .backbtn{
+        cursor: pointer;
+        }
+        .backbtn:hover,.backbtn:active{
+        	text-decoration: underline;
+        }
+        .banner{
+        margin-bottom: 6rem;
+        }
         h1{        
         	text-align: center;
+        	padding-top: 2rem;
         }
         .left{
         text-align: left;
+        width: 60%;
         }
         p {
           margin: 0;
@@ -63,13 +83,17 @@ const CatInfo = ({ catData }) => {
         h2 {
           margin: 0;
         }
-        h1{
-        margin-top: 2rem;
+        .footer{
+        margin-top: 5rem;
+        text-align: center;
         }
         a {
           list-style-type: none;
           text-decoration: none;
           color: black;
+        }
+        a:-webkit-any-link {
+        color: black;
         }
         a:visited {
           color: black;
@@ -83,22 +107,24 @@ const CatInfo = ({ catData }) => {
         }
         .image{
         position: absolute;
-        right: 0;
-        top: 0;
+        right: -2px;
+        top: -1px;
         }
-        .card {
+				.card {
+					background-color: white;
+					box-shadow: 0px 5px 38px 3px rgba(0,0,0,0.42);
+					-webkit-box-shadow: 0px 5px 38px 3px rgba(0,0,0,0.42);
+					-moz-box-shadow: 0px 5px 38px 3px rgba(0,0,0,0.42);
         	position: relative;
-        	width: 50%;
+        	width: 55%;
         	height: 300px;
-        	padding: 10rem 0 ;
           margin: 0 auto;
-          flex-basis: 45%;
           padding: 1.5rem;
           text-align: left;
           color: inherit;
           text-decoration: none;
           border: 1px solid #eaeaea;
-          border-radius: 10px;
+          border-radius: 10px 0 0 10px;
           transition: color 0.15s ease, border-color 0.15s ease;
         }
         .card h3 {
@@ -109,6 +135,31 @@ const CatInfo = ({ catData }) => {
           margin: 0;
           font-size: 1.25rem;
           line-height: 1.5;
+        }
+      `}</style>
+				<style jsx global>{`
+        html,
+        body {
+        	background-color:rgba(242, 242, 242, 0.1);
+          padding: 0;
+          margin: 0;
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+            sans-serif;
+        }
+        * {
+          box-sizing: border-box;
+        }
+        a {
+          list-style-type: none;
+          text-decoration: none;
+          color: black;
+        }
+        a:visited {
+          color: black;
+        }
+        a:hover {
+          text-decoration: underline;
         }
       `}</style>
 			</div>
