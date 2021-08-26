@@ -18,11 +18,15 @@ export default function IndexPage() {
         <h1>Rest api cats</h1>
         <p>Demo for rest api</p>
       </div>
-      <div className="grid">
-        <Link href="/cats">All cats</Link>
+      <div className='grid'>
+        <Link href='/cats'>
+          <div className='card'>
+            Browse cats ➡️
+          </div>
+        </Link>
       </div>
       <div className="footer">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 300">
           <path
             fill="#f3f4f5"
             fillOpacity="1"
@@ -31,11 +35,24 @@ export default function IndexPage() {
         </svg>
       </div>
       <style jsx>{`
+        *{text-align: center}
         .intro h1,
         p {
           margin: 0;
           padding: 0;
           text-align: center;
+        }
+        .btn{
+        padding: 1rem;
+        border: 1px solid lightgray;
+        font-weight: bold;      
+        border-radius: 10px;
+        text-align: center;
+        display: block;
+        cursor: pointer;
+        }
+        .btn:hover{
+        border: 1px solid gray;
         }
         .grid {
           margin: 2rem 0;
@@ -62,14 +79,10 @@ export default function IndexPage() {
           justify-content: center;
           align-items: center;
         }
-        footer {
+        .footer {
           width: 100%;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
           position: fixed;
-          bottom: 0px;
+          bottom: -100px;
         }
         footer img {
           margin-left: 0.5rem;
@@ -127,6 +140,7 @@ export default function IndexPage() {
         .card:hover,
         .card:focus,
         .card:active {
+          cursor: pointer;
           color: #0070f3;
           border-color: #0070f3;
         }

@@ -15,9 +15,8 @@ export async function getStaticProps(params) {
 export default function Cats({ cats }) {
 
   return (
-    <>
+    <div className='wrapper'>
       <div className='banner'>
-        <Link href="/">Go back </Link>
         <h1>All cats</h1>
       </div>
       <div className="grid">{cats.map((cat) => (
@@ -30,8 +29,13 @@ export default function Cats({ cats }) {
       ))}</div>
 
 
+      <div className='footer'>
+        <Link href="/">
+          <h3 className='backbtn'>↩ Intro page </h3>
+        </Link>
+      </div>
       <style jsx>{`
-        * {
+        * {        
         margin: 0;
         list-style-type: none;
           font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
@@ -39,11 +43,21 @@ export default function Cats({ cats }) {
             sans-serif;
           box-sizing: border-box;
         }
+         .backbtn{
+        cursor: pointer;
+        }
+        .backbtn:hover,.backbtn:active{
+        	text-decoration: underline;
+        }
+        .footer{
+        margin-top: 5rem;
+        text-align: center;
+        }
         body{
-        margin: 0;
+        background-color:#f5fcff;
         }
         h1{
-        margin-top: 2rem;
+        padding-top: 2rem;
         }
         a {
           list-style-type: none;
@@ -58,7 +72,6 @@ export default function Cats({ cats }) {
         }
         .banner{
         color: black;
-        background-color: white;
         text-align: center;
         }
         .grid {
@@ -70,8 +83,10 @@ export default function Cats({ cats }) {
           gap: 1rem;
           font-size: 1.5rem;
         }
-        
-          .card {
+        .card {          
+          -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
+          box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
+          background-color: white;
           margin: 1rem;
           flex-basis: 45%;
           padding: 1.5rem;
@@ -87,6 +102,7 @@ export default function Cats({ cats }) {
         .card:active {
           color: #0070f3;
           border-color: #0070f3;
+          cursor: pointer;
         }
         .card h3 {
           margin: 0 0 1rem 0;
@@ -98,6 +114,32 @@ export default function Cats({ cats }) {
           line-height: 1.5;
         }
       `}</style>
-    </>
+
+      <style jsx global>{`
+        html,
+        body {
+          padding: 0;
+        	background-color:rgba(242, 242, 242, 0.1);
+          margin: 0;
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+            sans-serif;
+        }
+        * {
+          box-sizing: border-box;
+        }
+        a {
+          list-style-type: none;
+          text-decoration: none;
+          color: black;
+        }
+        a:visited {
+          color: black;
+        }
+        a:hover {
+          text-decoration: underline;
+        }
+      `}</style>
+    </div>
   );
 }
