@@ -12,32 +12,37 @@ const mysql = require('mysql');
  
 var pool = mysql.createPool({
     connectionLimit : 10,
-    host: "localhost",
-    user: "root",
+    host: process.env.DB_HOST,
+    port: process.env.PORT,
+    user: process.env.DB_USER,
     password: process.env.PASSWD,
-    database : "tarmocats"
+    database : process.env.DB_NAME
   });
 
+  app.get('/api/', function (req, res) {
+    res.send("Hello from cat api root!");
+  });
 
 // CREATE
- app.post('/cats/add', (req, res) => {
+ app.post('/api/cats/add', (req, res) => {
     pool.getConnection((err, connection) => {
         if(err) throw err
         const { id, name, age, imgsrc } = req.body
         connection.query('INSERT INTO cat SET name=?, age=?, imgsrc=?', [name, age, imgsrc, id], (err, rows) => {
             connection.release() // return the connection to pool
             if (!err) {
-                res.send(rows)
+                res.send(JSON.stringify(rows))
             } else {
                 console.log(err)
             }
         })
+        connection.release();
     })
 });
 
 // READ
 // Get all cats
-app.get('/cats', (req, res) => {
+app.get('/api/cats', (req, res) => {
     pool.getConnection((err, connection) => {
         if(err) throw err
         console.log('connected as id ' + connection.threadId)
@@ -50,10 +55,11 @@ app.get('/cats', (req, res) => {
                 console.log(err)
             }
         })
+        connection.release();
     })
 })
 // Get cat by id
-app.get('/cats/:id', (req, res) => {
+app.get('/api/cats/:id', (req, res) => {
     pool.getConnection((err, connection) => {
         if(err) throw err
         connection.query('SELECT * FROM cat WHERE id = ?', [req.params.id], (err, rows) => {
@@ -64,11 +70,12 @@ app.get('/cats/:id', (req, res) => {
                 console.log(err)
             }
         })
+        connection.release();
     })
 });
 
 // UPDATE   
-app.put('/cats/:id', (req, res) => {
+app.put('/api/cats/:id', (req, res) => {
 
     pool.getConnection((err, connection) => {
         if(err) throw err
@@ -86,11 +93,12 @@ app.put('/cats/:id', (req, res) => {
             }
 
         })
+        connection.release();
     })
 })
 
 // DELETE
-app.delete('/cats/:id', (req, res) => {
+app.delete('/api/cats/:id', (req, res) => {
 
     pool.getConnection((err, connection) => {
         if(err) throw err
@@ -102,10 +110,10 @@ app.delete('/cats/:id', (req, res) => {
                 console.log(err)
             }
         })
+        connection.release();
     })
 });
       
 
 //PORT ENVIRONMENT VARIABLE
-const port = process.env.PORT || 8080;
-app.listen(port, () => console.log(`Listening on port ${port}..`));
+app.listen();
