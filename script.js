@@ -11,7 +11,7 @@ app.use(express.json())
 const mysql = require('mysql');
  
 var pool = mysql.createPool({
-    connectionLimit : 10,
+    connectionLimit : 2,
     host: process.env.DB_HOST,
     port: process.env.PORT,
     user: process.env.DB_USER,
@@ -20,7 +20,7 @@ var pool = mysql.createPool({
   });
 
   app.get('/api/', function (req, res) {
-    res.send("Hello from cat api root!");
+    res.json({ message: "Hello from cat api root!"});
   });
 
 // CREATE
@@ -31,12 +31,11 @@ var pool = mysql.createPool({
         connection.query('INSERT INTO cat SET name=?, age=?, imgsrc=?', [name, age, imgsrc, id], (err, rows) => {
             connection.release() // return the connection to pool
             if (!err) {
-                res.send(JSON.stringify(rows))
+                res.send({data:rows})
             } else {
                 console.log(err)
             }
         })
-        connection.release();
     })
 });
 
@@ -50,12 +49,11 @@ app.get('/api/cats', (req, res) => {
             connection.release() 
 
             if (!err) {
-                res.send(rows)
+                res.send({data:rows})
             } else {
                 console.log(err)
             }
         })
-        connection.release();
     })
 })
 // Get cat by id
@@ -70,7 +68,6 @@ app.get('/api/cats/:id', (req, res) => {
                 console.log(err)
             }
         })
-        connection.release();
     })
 });
 
@@ -93,7 +90,6 @@ app.put('/api/cats/:id', (req, res) => {
             }
 
         })
-        connection.release();
     })
 })
 
@@ -110,7 +106,6 @@ app.delete('/api/cats/:id', (req, res) => {
                 console.log(err)
             }
         })
-        connection.release();
     })
 });
       
